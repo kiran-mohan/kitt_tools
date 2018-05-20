@@ -68,6 +68,7 @@ def teleop():
         else:
             speed_delta = 0
             steering_angle_delta = 0
+            # reset the speed and steering_angle on quitting (Ctrl+C)
             if (key == '\x03'):
                 drive.speed = rospy.get_param("/drive/min_speed")
                 drive.steering_angle = rospy.get_param("/drive/steering_offset")
