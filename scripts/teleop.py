@@ -56,6 +56,7 @@ def teleop():
     printSplashScreenMessage()
     while not rospy.is_shutdown():
         key = readkey()
+        # update deltas based on the key stroke
         # 'r' resets the speed and steering_angle
         if key == 'r':
             drive.speed = rospy.get_param("/drive/min_speed")
@@ -74,8 +75,10 @@ def teleop():
                 drive.steering_angle = rospy.get_param("/drive/steering_offset")
                 pub.publish(drive)
                 break
+        # update the speed and steering_angle based on deltas
         drive.speed = drive.speed + speed_delta
         drive.steering_angle = drive.steering_angle + steering_angle_delta
+        # apply limits on speed and steering_angle
         applySpeedLimits(drive, min_speed, max_speed)
         applySteeringLimits(drive, min_steering_angle, max_steering_angle)
         pub.publish(drive)
